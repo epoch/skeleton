@@ -27,6 +27,8 @@
 │   │   ├── index.js
 │   │   └── navTo
 │   │       └── index.js
+│   ├── reducers
+│   │   └── index.js
 │   ├── index.html
 │   ├── index.js
 │   └── style.css
