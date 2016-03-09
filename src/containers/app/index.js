@@ -13,7 +13,6 @@ class App extends Component {
 
   render() {
     const { dispatch, path } = this.props;
-    // window.location.hash = path;
     return (
       <div>
         {this.getPageView()}
