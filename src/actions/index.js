@@ -1,7 +1,8 @@
 
-export function gotoView(page) {
+export function navigate(path) {
+  window.location.hash = path;
   return {
-    type: 'GOTO_VIEW',
-    page: page
+    type: 'NAVIGATE',
+    path: path
   }
 }

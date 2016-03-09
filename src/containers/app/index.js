@@ -1,12 +1,19 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { About, Home, Contact } from '../../components';
-import { gotoView } from '../../actions';
+import { navigate } from '../../actions';
 
 class App extends Component {
-  render() {
+  componentDidMount() {
     const { dispatch } = this.props;
-    window.location.hash = this.props.page;
+    window.addEventListener('load', function() {
+      dispatch(navigate(window.location.hash.slice(1)));
+    }, false);
+  }
+
+  render() {
+    const { dispatch, path } = this.props;
+    // window.location.hash = path;
     return (
       <div>
         {this.getPageView()}
@@ -15,7 +22,8 @@ class App extends Component {
   }
 
   getPageView() {
-    switch (this.props.page) {
+    switch (this.props.path) {
+      case '':
       case 'home': return <Home />
       case 'about': return <About testValue="win" />
       case 'contact': return <Contact />
@@ -25,7 +33,7 @@ class App extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    page: state.page
+    path: state.route.path
   }
 }
 
