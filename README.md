@@ -1,3 +1,9 @@
+A basic react redux react-router babel skeleton with webpack.
+
+- app layout
+  - home page
+  - about page
+  - users page
 
 ```
 
@@ -13,9 +19,8 @@
 │   │   └── index.js
 │   ├── components
 │   │   ├── about
-│   │   │   ├── index.js
-│   │   │   └── style.css
-│   │   ├── contact
+│   │   │   └── index.js
+│   │   ├── users
 │   │   │   └── index.js
 │   │   ├── home
 │   │   │   ├── index.js
@@ -24,9 +29,7 @@
 │   ├── containers
 │   │   ├── app
 │   │   │   └── index.js
-│   │   ├── index.js
-│   │   └── navTo
-│   │       └── index.js
+│   │   └── index.js
 │   ├── reducers
 │   │   └── index.js
 │   ├── index.html
