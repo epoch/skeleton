@@ -1,5 +1,2 @@
 import App from './app';
-
-module.exports = {
-  App
-}
+export { App };

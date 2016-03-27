@@ -21,9 +21,7 @@ class App extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  return {
-    path: state.route.path
-  }
+  return {}
 }
 
 export default connect(mapStateToProps)(App);
