@@ -60,23 +60,15 @@
 
 	var _reactRedux = __webpack_require__(161);
 
-	__webpack_require__(194);
+	var _reducers = __webpack_require__(191);
+
+	var _reducers2 = _interopRequireDefault(_reducers);
+
+	__webpack_require__(192);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var reducer = function reducer() {
-	  var prevState = arguments.length <= 0 || arguments[0] === undefined ? { page: 'home' } : arguments[0];
-	  var action = arguments[1];
-
-	  switch (action.type) {
-	    case 'GOTO_VIEW':
-	      return Object.assign({}, prevState, { page: action.page });
-	    default:
-	      return prevState;
-	  }
-	};
-
-	var store = (0, _redux.createStore)(reducer);
+	var store = (0, _redux.createStore)(_reducers2.default);
 
 	_reactDom2.default.render(_react2.default.createElement(
 	  _reactRedux.Provider,
@@ -19748,7 +19740,7 @@
 
 	var _app2 = _interopRequireDefault(_app);
 
-	var _navTo = __webpack_require__(184);
+	var _navTo = __webpack_require__(181);
 
 	var _navTo2 = _interopRequireDefault(_navTo);
 
@@ -19777,9 +19769,9 @@
 
 	var _reactRedux = __webpack_require__(161);
 
-	var _components = __webpack_require__(182);
+	var _components = __webpack_require__(179);
 
-	var _actions = __webpack_require__(185);
+	var _actions = __webpack_require__(182);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -19799,11 +19791,21 @@
 	  }
 
 	  _createClass(App, [{
-	    key: 'render',
-	    value: function render() {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
 	      var dispatch = this.props.dispatch;
 
-	      window.location.hash = this.props.page;
+	      window.addEventListener('load', function () {
+	        dispatch((0, _actions.navigate)(window.location.hash.slice(1)));
+	      }, false);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props;
+	      var dispatch = _props.dispatch;
+	      var path = _props.path;
+
 	      return _react2.default.createElement(
 	        'div',
 	        null,
@@ -19813,7 +19815,8 @@
 	  }, {
 	    key: 'getPageView',
 	    value: function getPageView() {
-	      switch (this.props.page) {
+	      switch (this.props.path) {
+	        case '':
 	        case 'home':
 	          return _react2.default.createElement(_components.Home, null);
 	        case 'about':
@@ -19829,7 +19832,7 @@
 
 	var mapStateToProps = function mapStateToProps(state, ownProps) {
 	  return {
-	    page: state.page
+	    path: state.route.path
 	  };
 	};
 
@@ -20010,15 +20013,15 @@
 
 	var _wrapActionCreators2 = _interopRequireDefault(_wrapActionCreators);
 
-	var _isPlainObject = __webpack_require__(177);
+	var _isPlainObject = __webpack_require__(169);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-	var _hoistNonReactStatics = __webpack_require__(180);
+	var _hoistNonReactStatics = __webpack_require__(177);
 
 	var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
 
-	var _invariant = __webpack_require__(181);
+	var _invariant = __webpack_require__(178);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -20713,10 +20716,7 @@
 	  if (!isObjectLike(value) || objectToString.call(value) != objectTag || isHostObject(value)) {
 	    return false;
 	  }
-	  var proto = objectProto;
-	  if (typeof value.constructor == 'function') {
-	    proto = getPrototypeOf(value);
-	  }
+	  var proto = getPrototypeOf(value);
 	  if (proto === null) {
 	    return true;
 	  }
@@ -21120,144 +21120,6 @@
 
 /***/ },
 /* 177 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var isHostObject = __webpack_require__(178),
-	    isObjectLike = __webpack_require__(179);
-
-	/** `Object#toString` result references. */
-	var objectTag = '[object Object]';
-
-	/** Used for built-in method references. */
-	var objectProto = Object.prototype;
-
-	/** Used to resolve the decompiled source of functions. */
-	var funcToString = Function.prototype.toString;
-
-	/** Used to infer the `Object` constructor. */
-	var objectCtorString = funcToString.call(Object);
-
-	/**
-	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
-	 * of values.
-	 */
-	var objectToString = objectProto.toString;
-
-	/** Built-in value references. */
-	var getPrototypeOf = Object.getPrototypeOf;
-
-	/**
-	 * Checks if `value` is a plain object, that is, an object created by the
-	 * `Object` constructor or one with a `[[Prototype]]` of `null`.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.
-	 * @example
-	 *
-	 * function Foo() {
-	 *   this.a = 1;
-	 * }
-	 *
-	 * _.isPlainObject(new Foo);
-	 * // => false
-	 *
-	 * _.isPlainObject([1, 2, 3]);
-	 * // => false
-	 *
-	 * _.isPlainObject({ 'x': 0, 'y': 0 });
-	 * // => true
-	 *
-	 * _.isPlainObject(Object.create(null));
-	 * // => true
-	 */
-	function isPlainObject(value) {
-	  if (!isObjectLike(value) || objectToString.call(value) != objectTag || isHostObject(value)) {
-	    return false;
-	  }
-	  var proto = objectProto;
-	  if (typeof value.constructor == 'function') {
-	    proto = getPrototypeOf(value);
-	  }
-	  if (proto === null) {
-	    return true;
-	  }
-	  var Ctor = proto.constructor;
-	  return typeof Ctor == 'function' && Ctor instanceof Ctor && funcToString.call(Ctor) == objectCtorString;
-	}
-
-	module.exports = isPlainObject;
-
-/***/ },
-/* 178 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	/**
-	 * Checks if `value` is a host object in IE < 9.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a host object, else `false`.
-	 */
-	function isHostObject(value) {
-	  // Many host objects are `Object` objects that can coerce to strings
-	  // despite having improperly defined `toString` methods.
-	  var result = false;
-	  if (value != null && typeof value.toString != 'function') {
-	    try {
-	      result = !!(value + '');
-	    } catch (e) {}
-	  }
-	  return result;
-	}
-
-	module.exports = isHostObject;
-
-/***/ },
-/* 179 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
-	/**
-	 * Checks if `value` is object-like. A value is object-like if it's not `null`
-	 * and has a `typeof` result of "object".
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
-	 * @example
-	 *
-	 * _.isObjectLike({});
-	 * // => true
-	 *
-	 * _.isObjectLike([1, 2, 3]);
-	 * // => true
-	 *
-	 * _.isObjectLike(_.noop);
-	 * // => false
-	 *
-	 * _.isObjectLike(null);
-	 * // => false
-	 */
-	function isObjectLike(value) {
-	  return !!value && (typeof value === 'undefined' ? 'undefined' : _typeof(value)) == 'object';
-	}
-
-	module.exports = isObjectLike;
-
-/***/ },
-/* 180 */
 /***/ function(module, exports) {
 
 	/**
@@ -21300,7 +21162,7 @@
 	};
 
 /***/ },
-/* 181 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -21354,20 +21216,20 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 182 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _about = __webpack_require__(183);
+	var _about = __webpack_require__(180);
 
 	var _about2 = _interopRequireDefault(_about);
 
-	var _home = __webpack_require__(190);
+	var _home = __webpack_require__(187);
 
 	var _home2 = _interopRequireDefault(_home);
 
-	var _contact = __webpack_require__(193);
+	var _contact = __webpack_require__(190);
 
 	var _contact2 = _interopRequireDefault(_contact);
 
@@ -21380,7 +21242,7 @@
 	};
 
 /***/ },
-/* 183 */
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21395,11 +21257,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _navTo = __webpack_require__(184);
+	var _navTo = __webpack_require__(181);
 
 	var _navTo2 = _interopRequireDefault(_navTo);
 
-	__webpack_require__(186);
+	__webpack_require__(183);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21450,7 +21312,7 @@
 	exports.default = About;
 
 /***/ },
-/* 184 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21467,7 +21329,7 @@
 
 	var _reactRedux = __webpack_require__(161);
 
-	var _actions = __webpack_require__(185);
+	var _actions = __webpack_require__(182);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21492,7 +21354,7 @@
 	      var dispatch = this.props.dispatch;
 
 	      window.addEventListener('hashchange', function () {
-	        dispatch((0, _actions.gotoView)(window.location.hash.slice(1)));
+	        dispatch((0, _actions.navigate)(window.location.hash.slice(1)));
 	      }, false);
 	    }
 	  }, {
@@ -21505,7 +21367,7 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { onClick: function onClick() {
-	            dispatch((0, _actions.gotoView)(_this2.props.path));
+	            dispatch((0, _actions.navigate)(_this2.props.path));
 	          } },
 	        this.props.children
 	      );
@@ -21518,7 +21380,7 @@
 	exports.default = (0, _reactRedux.connect)()(NavTo);
 
 /***/ },
-/* 185 */
+/* 182 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -21526,25 +21388,26 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.gotoView = gotoView;
-	function gotoView(page) {
+	exports.navigate = navigate;
+	function navigate(path) {
+	  window.location.hash = path;
 	  return {
-	    type: 'GOTO_VIEW',
-	    page: page
+	    type: 'NAVIGATE',
+	    path: path
 	  };
 	}
 
 /***/ },
-/* 186 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(187);
+	var content = __webpack_require__(184);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(189)(content, {});
+	var update = __webpack_require__(186)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -21561,10 +21424,10 @@
 	}
 
 /***/ },
-/* 187 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(188)();
+	exports = module.exports = __webpack_require__(185)();
 	// imports
 
 
@@ -21575,7 +21438,7 @@
 
 
 /***/ },
-/* 188 */
+/* 185 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -21630,7 +21493,7 @@
 	};
 
 /***/ },
-/* 189 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -21846,7 +21709,6 @@
 	function applyToTag(styleElement, obj) {
 		var css = obj.css;
 		var media = obj.media;
-		var sourceMap = obj.sourceMap;
 
 		if(media) {
 			styleElement.setAttribute("media", media)
@@ -21864,7 +21726,6 @@
 
 	function updateLink(linkElement, obj) {
 		var css = obj.css;
-		var media = obj.media;
 		var sourceMap = obj.sourceMap;
 
 		if(sourceMap) {
@@ -21884,7 +21745,7 @@
 
 
 /***/ },
-/* 190 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21897,11 +21758,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _navTo = __webpack_require__(184);
+	var _navTo = __webpack_require__(181);
 
 	var _navTo2 = _interopRequireDefault(_navTo);
 
-	__webpack_require__(191);
+	__webpack_require__(188);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21938,16 +21799,16 @@
 	exports.default = Home;
 
 /***/ },
-/* 191 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(192);
+	var content = __webpack_require__(189);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(189)(content, {});
+	var update = __webpack_require__(186)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -21964,10 +21825,10 @@
 	}
 
 /***/ },
-/* 192 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(188)();
+	exports = module.exports = __webpack_require__(185)();
 	// imports
 
 
@@ -21978,7 +21839,7 @@
 
 
 /***/ },
-/* 193 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21991,7 +21852,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _navTo = __webpack_require__(184);
+	var _navTo = __webpack_require__(181);
 
 	var _navTo2 = _interopRequireDefault(_navTo);
 
@@ -22025,16 +21886,48 @@
 	exports.default = Contact;
 
 /***/ },
-/* 194 */
+/* 191 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	function route() {
+	  var prevState = arguments.length <= 0 || arguments[0] === undefined ? { path: '' } : arguments[0];
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case 'NAVIGATE':
+	      return Object.assign({}, prevState, { path: action.path });
+	    default:
+	      return prevState;
+	  }
+	}
+
+	function appReducer() {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	  var action = arguments[1];
+
+	  return {
+	    route: route(state.route, action)
+	  };
+	}
+
+	exports.default = appReducer;
+
+/***/ },
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(195);
+	var content = __webpack_require__(193);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(189)(content, {});
+	var update = __webpack_require__(186)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -22051,10 +21944,10 @@
 	}
 
 /***/ },
-/* 195 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(188)();
+	exports = module.exports = __webpack_require__(185)();
 	// imports
 
 

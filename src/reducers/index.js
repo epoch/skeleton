@@ -7,9 +7,18 @@ function route(prevState = { path: '' }, action) {
   }
 }
 
+function users(prevState = [
+  'mary',
+  'jo',
+  'lisa'
+], action) {
+  return prevState;
+}
+
 function appReducer(state = {}, action) {
   return {
-    route: route(state.route, action)
+    route: route(state.route, action),
+    users: users(state.route, action)
   }
 }
 

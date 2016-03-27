@@ -1,9 +1,9 @@
 import About from './about';
 import Home from './home';
-import Contact from './contact';
+import Users from './users';
 
 module.exports = {
   About,
   Home,
-  Contact
+  Users
 }

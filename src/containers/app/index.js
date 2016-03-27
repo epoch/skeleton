@@ -1,33 +1,23 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { About, Home, Contact } from '../../components';
-import { navigate } from '../../actions';
+import { Link } from 'react-router';
 
 class App extends Component {
-  componentDidMount() {
-    const { dispatch } = this.props;
-    window.addEventListener('load', function() {
-      dispatch(navigate(window.location.hash.slice(1)));
-    }, false);
-  }
 
   render() {
     const { dispatch, path } = this.props;
     return (
       <div>
-        {this.getPageView()}
+        <ul>
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/about">About</Link></li>
+          <li><Link to="/users">Users</Link></li>
+        </ul>
+        {this.props.children}
       </div>
     )
   }
 
-  getPageView() {
-    switch (this.props.path) {
-      case '':
-      case 'home': return <Home />
-      case 'about': return <About testValue="win" />
-      case 'contact': return <Contact />
-    }
-  }
 }
 
 const mapStateToProps = (state, ownProps) => {

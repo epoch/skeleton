@@ -1,20 +1,15 @@
 import React, { Component, PropTypes } from 'react';
-import NavTo from '../../containers/navTo'; // wtf
-import './style.css';
+import { Link } from 'react-router';
 
 class About extends Component {
   render() {
     return (
       <div className="about-view">
-        <div>about {this.props.testValue}</div>
-        <NavTo path="home">go home bum</NavTo>
+        <h1>about</h1>
+        <Link to="/users">users</Link>
       </div>
     )
   }
-}
-
-About.propTypes = {
-  testValue: PropTypes.string.isRequired
 }
 
 export default About;
