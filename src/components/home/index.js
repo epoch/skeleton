@@ -14,5 +14,4 @@ var Home = React.createClass({
 
 });
 
-Home.propTypes = {}
 export default Home;
