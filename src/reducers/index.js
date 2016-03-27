@@ -1,12 +1,3 @@
-function route(prevState = { path: '' }, action) {
-  switch (action.type) {
-    case 'NAVIGATE':
-      return Object.assign({}, prevState, { path: action.path });
-    default:
-      return prevState;
-  }
-}
-
 function users(prevState = [
   'mary',
   'jo',
@@ -17,8 +8,7 @@ function users(prevState = [
 
 function appReducer(state = {}, action) {
   return {
-    route: route(state.route, action),
-    users: users(state.route, action)
+    users: users(state.users, action)
   }
 }
 
